@@ -11,6 +11,10 @@ app.use(rateLimiter);
 // Routes
 app.use('/api/v1/books', bookRoutes);
 
+app.get('/', (req, res) => {
+    res.send('Welcome to the Library Management API');
+});
+
 // Error handling middleware
 app.use((err, req, res, next) => {
     res.status(err.status || 500).json({

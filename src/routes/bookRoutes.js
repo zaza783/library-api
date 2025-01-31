@@ -2,25 +2,26 @@ const express = require('express');
 const router = express.Router();
 const BookController = require('../controllers/bookController');
 const rateLimiter = require('../middlewares/rateLimiter');
+const bookModel = require('../models/bookModel');
 
-const bookController = new BookController();
+const bookController = new BookController(bookModel); // Pass bookModel to the constructor
 
 // Rate limiting middleware applied to all book routes
 router.use(rateLimiter);
 
 // Get all books with pagination
-router.get('/api/v1/books', bookController.getAllBooks);
+router.get('/', bookController.getAllBooks.bind(bookController));
 
 // Get a specific book by ID
-router.get('/api/v1/books/:id', bookController.getBookById);
+router.get('/:id', bookController.getBookById.bind(bookController));
 
 // Add a new book
-router.post('/api/v1/books', bookController.addBook);
+router.post('/', bookController.addBook.bind(bookController));
 
 // Update an existing book by ID
-router.put('/api/v1/books/:id', bookController.updateBook);
+router.put('/:id', bookController.updateBook.bind(bookController));
 
 // Delete a book by ID
-router.delete('/api/v1/books/:id', bookController.deleteBook);
+router.delete('/:id', bookController.deleteBook.bind(bookController));
 
 module.exports = router;
